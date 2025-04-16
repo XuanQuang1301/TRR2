@@ -1,56 +1,61 @@
 #include <bits/stdc++.h>
 using namespace std;
-int main(){
+int main() {
     ifstream inp("DT.INP");
     ofstream out("DT.OUT");
-    int t, n, k;
-    int adj[105][105] = {0};
-    inp >> t;
-    if(t == 1){
-        inp >> n >> k;
-        for(int i = 0; i < k; i++){
-            int x, y; inp >> x >> y;
-            adj[x][y] = 1;
-            adj[y][x] = 1;
-        }
-        for(int i = 1; i <= n; i++){
-            int cnt = 0;
-            for(int j = 1; j <= n; j++){
-                if(adj[i][j] == 1){
-                    cnt++;
-                }
-            }
-            out << cnt << " ";
+    int t, n;
+    inp >> t >> n;
+    vector<vector<int>> adj(n + 1, vector<int>(n + 1, 0));
+    for (int i = 1; i <= n; i++) {
+        int k;
+        inp >> k;
+        for (int j = 0; j < k; j++) {
+            int v;
+            inp >> v;
+            adj[i][v] = 1;
+            adj[v][i] = 1;
         }
     }
-    else{
-        inp >> n;
-        for(int i = 1; i <= n; i++){
-            int k; inp >> k;
-            while(k--){
-                int x; inp >> x;
-                adj[i][x] = 1;
+
+    if (t == 1) {
+        for (int i = 1; i <= n; i++) {
+            int degree = 0;
+            for (int j = 1; j <= n; j++) {
+                if (adj[i][j] == 1) {
+                    degree++;
+                }
             }
+            out << degree << " ";
         }
-        int ans[109][109] = {0};
-        int dem = 0;
-        for(int i = 1; i <= n; i++){
-            for(int j = i + 1; j <= n; j++){
+    } else if (t == 2) {
+        set<pair<int, int>> s;
+        for (int i = 1; i <= n; i++) {
+            for (int j = i + 1; j <= n; j++) {
                 if(adj[i][j] == 1){
-                    dem++;
-                    ans[i][dem] = 1;
-                    ans[j][dem] = 1;
+                    pair<int, int> p;
+                    p.first = i;
+                    p.second = j;
+                    s.insert(p);
                 }
             }
         }
-        out << n << " " << dem << endl;
+        out << n << " " << s.size() << endl;
+        vector<vector<int>> ans(n + 1, vector<int>(n + 1, 0));
+        int cnt = 1;
+        for(auto i : s){
+            ans[i.first][cnt] = 1;
+            ans[i.second][cnt] = 1;
+            cnt++;
+        }
         for(int i = 1; i <= n; i++){
-            for(int j = 1; j <= dem; j++){
+            for(int j = 1; j <= s.size(); j++){
                 out << ans[i][j] << " ";
             }
             out << endl;
         }
     }
+
     inp.close();
     out.close();
+    return 0;
 }

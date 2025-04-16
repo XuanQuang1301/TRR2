@@ -3,33 +3,37 @@ using namespace std;
 int t, n, u, v, train[1000], ok;
 vector<bool> check;
 vector<vector<int>> adj;
-
-void DFS(int e){
-    if(e == v){
-      ok = 1;
-      return;
-    }
+void BFS(int e){
+    queue<int> q;
+    q.push(e);
     check[e] = true;
-    for(auto i : adj[e]){
-        if(!check[i]){
-            train[i] = e;
-            DFS(i);
-            if(ok){ return;}
+    while(!q.empty()){
+        int x = q.front(); q.pop();
+        if(x == v){
+            ok = 1;
+            return;
+        }
+        for(auto i : adj[x]){
+            if(!check[i]){
+                check[i] = true;
+                q.push(i);
+                train[i] = x;
+            }
         }
     }
 }
 int main(){
-    ifstream inp("DT.INP");
-    ofstream out("DT.OUT");
+    ifstream inp("TK.INP");
+    ofstream out("TK.OUT");
 
-    cin >> t >> n >> u >> v;
-    adj.clear(); adj.resize(n + 10);
-    check.clear(); check.resize(n + 10, false);
+    inp >> t >> n >> u >> v;
+    adj.clear(); adj.resize(n + 5);
+    check.clear(); check.resize(n + 5, false);
     memset(train, 0, sizeof(train));
 
     for(int i = 1; i <= n; i++){
         for(int j = 1; j <= n; j++){
-            int x; cin >> x;
+            int x; inp >> x;
             if(x == 1){
                 adj[i].push_back(j);
             }
@@ -38,7 +42,6 @@ int main(){
 
     if(t == 1){
         int cnt = 0;
-        check[u] = true;
         for(auto i : adj[u]){
             if(!check[i] && i != v){
                 check[i] = true;
@@ -50,14 +53,18 @@ int main(){
                 }
             }
         }
-        cout << cnt << endl;
+        out << cnt << endl;
     }
+
     else{
         ok = 0;
         train[u] = 0;
-        DFS(u);
+        BFS(u);
         if(ok == 0){
-            cout << 0 << endl;
+            out << 0;
+        }
+        else if(u == v){
+            out << u;
         }
         else{
             vector<int> ve;
@@ -68,9 +75,10 @@ int main(){
                 tmp = train[tmp];
             }
             for(int i = ve.size() - 1; i >= 0; i--){
-                cout << ve[i] << " ";
+                out << ve[i] << " ";
             }
         }
+        out << endl;
     }
     inp.close();
     out.close();
