@@ -6,18 +6,19 @@ vector<vector<int>> adj;
 void BFS(int e){
     queue<int> q;
     q.push(e);
-    check[e] = true;
     while(!q.empty()){
-        int x = q.front(); q.pop();
+        int x = q.front();
+        q.pop();
         if(x == v){
             ok = 1;
             return;
         }
-        for(auto i : adj[x]){
+        check[x] = true;
+        for(int i : adj[x]){
             if(!check[i]){
                 check[i] = true;
-                q.push(i);
                 train[i] = x;
+                q.push(i);
             }
         }
     }
@@ -27,8 +28,8 @@ int main(){
     ofstream out("TK.OUT");
 
     inp >> t >> n >> u >> v;
-    adj.clear(); adj.resize(n + 5);
-    check.clear(); check.resize(n + 5, false);
+    adj.clear(); adj.resize(n + 10);
+    check.clear(); check.resize(n + 10, false);
     memset(train, 0, sizeof(train));
 
     for(int i = 1; i <= n; i++){
@@ -42,6 +43,7 @@ int main(){
 
     if(t == 1){
         int cnt = 0;
+        check[u] = true;
         for(auto i : adj[u]){
             if(!check[i] && i != v){
                 check[i] = true;
@@ -59,12 +61,10 @@ int main(){
     else{
         ok = 0;
         train[u] = 0;
+        check.assign(n + 10, false);
         BFS(u);
-        if(ok == 0){
-            out << 0;
-        }
-        else if(u == v){
-            out << u;
+        if(ok == 0 || u == v){
+            out << 0 << endl;
         }
         else{
             vector<int> ve;
@@ -78,7 +78,6 @@ int main(){
                 out << ve[i] << " ";
             }
         }
-        out << endl;
     }
     inp.close();
     out.close();

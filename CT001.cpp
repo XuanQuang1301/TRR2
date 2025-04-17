@@ -1,60 +1,60 @@
 #include <bits/stdc++.h>
 using namespace std;
-int n, m, u, adj[1000][1000] = {0}, bac[1000] = {0};
+
+int v, e, n;
 int main(){
-    ifstream inp("CT.INP");
+    ifstream in("CT.INP");
     ofstream out("CT.OUT");
-    int t; inp >> t;
+    int t; in >> t;
     if(t == 1){
-        inp >> n >> m;
-        for(int i = 0; i < m; i++){
-            int x, y; inp >> x >> y;
-            bac[x]++;
-            bac[y]++;
+        in >> v >> e;
+        vector<vector<int>> adj;
+        for(int i = 0; i < e; i++){
+            int x, y; in >> x >> y;
+            adj[x].push_back(y);
+            adj[y].push_back(x);
         }
         int cnt = 0;
-        for(int i = 1; i <= n; i++){
-            if(bac[i] % 2 == 1){
+        for(int i = 1; i <= v; i++){
+            if(adj[i].size() % 2 == 1){
                 cnt++;
             }
         }
         if(cnt == 0){
             out << 1 << endl;
         }
-        else if(cnt == 2){
+        if(cnt == 2){
             out << 2 << endl;
         }
         else out << 0 << endl;
     }
     else{
-        inp >> n >> m >> u;
-        for(int i = 0; i < m; i++){
-            int x, y; inp >> x >> y;
-            adj[x][y] = 1;
-            adj[y][x] = 1;
+        in >> v >> e >> n;
+        set<int> adj[1000];
+        for(int i = 0; i < e; i++){
+            int x, y; in >> x >> y;
+            adj[x].insert(y);
+            adj[y].insert(x);
         }
-        vector<int> ve;
         stack<int> st;
-        st.push(u);
+        vector<int> ans;
+        st.push(n);
         while(!st.empty()){
-            int tmp = st.top();
-            for(int i = 1; i <= n; i++){
-                if(adj[tmp][i] == 1){
-                    adj[tmp][i] = 0;
-                    adj[i][tmp] = 0;
-                    st.push(i);
-                    break;
-                }
+            int x = st.top();
+            if(adj[x].size() != 0){
+                int y = *adj[x].begin();
+                adj[x].erase(y);
+                adj[y].erase(x);
+                st.push(y);
             }
-            if(tmp == st.top()){
+            else{
                 st.pop();
-                ve.push_back(tmp);
+                ans.push_back(x);
             }
         }
-        for(int i = ve.size() - 1; i >= 0; i--){
-            out << ve[i] << " ";
+        for(int i = ans.size() - 1; i >= 0; i--){
+            out << ans[i] << " ";
         }
+        out << endl;
     }
-    inp.close(); out.close();
-    return 0;
 }

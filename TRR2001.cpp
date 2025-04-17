@@ -19,8 +19,8 @@ void DFS(int e){
     }
 }
 int main(){
-    ifstream inp("DT.INP");
-    ofstream out("DT.OUT");
+    ifstream inp("TK.INP");
+    ofstream out("TK.OUT");
 
     cin >> t >> n >> u >> v;
     adj.clear(); adj.resize(n + 10);
