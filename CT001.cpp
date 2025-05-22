@@ -23,7 +23,7 @@ int main(){
         if(cnt == 0){
             out << 1 << endl;
         }
-        if(cnt == 2){
+        else if(cnt == 2){
             out << 2 << endl;
         }
         else out << 0 << endl;

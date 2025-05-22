@@ -1,0 +1,1 @@
+{"name":"Local: TRR1011","url":"d:\\PTIT\\TRR2\\CODE_PTIT\\TRR1011.cpp","tests":[{"id":1744881089780,"input":"1\n4 3\n1 2 1\n1 4 2\n2 3 3","output":""}],"interactive":false,"memoryLimit":1024,"timeLimit":3000,"srcPath":"d:\\PTIT\\TRR2\\CODE_PTIT\\TRR1011.cpp","group":"local","local":true}
